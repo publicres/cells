@@ -8,10 +8,7 @@
 
 $(function()	//the funciton being called after finishing initilizing the DOM
 {
-	$("#CellBase").css("width",GLOBAL_CONST.CANVAS_SIZE)
-				  .css("height",GLOBAL_CONST.CANVAS_SIZE)
-				  .css("border","1px solid #000000")
-				  .attr("width",GLOBAL_CONST.CANVAS_SIZE)
+	$("#CellBase").attr("width",GLOBAL_CONST.CANVAS_SIZE)
 				  .attr("height",GLOBAL_CONST.CANVAS_SIZE);
 
 	/*Begin: delete this to use per-pixel drawing*/
@@ -20,14 +17,21 @@ $(function()	//the funciton being called after finishing initilizing the DOM
 	/*End*/
 
 	//get the dc of canvas that will be passed to the draw function later:
-	var canvas=$("#CellBase")[0].getContext("2d");
+	GLOBAL_CONST.CANVAS=$("#CellBase")[0].getContext("2d");
 
 	//generate the global arena and initialize it
 	GLOBAL_CONST.ARENA=new Arena();
-	RandomShuffle(GLOBAL_CONST.ARENA);
+	RefreshOnce();
 
-	//start 
-	GLOBAL_CONST.TIMER=setInterval(function(){RefreshCanvas(canvas)},1000/GLOBAL_CONST.FPS);
+	//Bind the event of two buttons
+	$("#RefreshButton").click(RefreshOnce);
+	$("#PlayButton").click(function()
+	{
+		if (GLOBAL_CONST.TIMER==-1)
+			StartPlay();
+		else
+			PausePlay();
+	});
 });
 
 function RefreshCanvas(canvas)	//called periodicly to lay the arena to the canvas as well as to calculate the next frame
@@ -39,7 +43,7 @@ function RefreshCanvas(canvas)	//called periodicly to lay the arena to the canva
 	perWidth=perHeight=1;
 	/*End*/
 
-	canvas.clearRect(0,0,GLOBAL_CONST.WIDTH,GLOBAL_CONST.HEIGHT);
+	
 	for (var i=0;i<GLOBAL_CONST.HEIGHT;i++)
 		for (var j=0;j<GLOBAL_CONST.WIDTH;j++)
 		{
@@ -53,3 +57,28 @@ function RefreshCanvas(canvas)	//called periodicly to lay the arena to the canva
 	GLOBAL_CONST.ARENA=RefreshArena(GLOBAL_CONST.ARENA);
 }
 
+function PausePlay()	//Pause the refreshing and change the image of button
+{
+	if (GLOBAL_CONST.TIMER!=-1)
+	{
+		$("#PlayButton").attr("src","img/play.png");
+		clearInterval(GLOBAL_CONST.TIMER);
+	}
+	GLOBAL_CONST.TIMER=-1;
+}
+
+function StartPlay()	//Continue the refreshing and change the image of button
+{
+	if (GLOBAL_CONST.TIMER==-1)
+	{
+		$("#PlayButton").attr("src","img/play-r.png");
+		GLOBAL_CONST.TIMER=setInterval(function(){RefreshCanvas(GLOBAL_CONST.CANVAS)},1000/GLOBAL_CONST.FPS);
+	}
+}
+
+function RefreshOnce()	//Reshuffle the whole arena but pause refreshing
+{
+	PausePlay();
+	RandomShuffle(GLOBAL_CONST.ARENA);
+	RefreshCanvas(GLOBAL_CONST.CANVAS);
+}
