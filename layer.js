@@ -57,6 +57,8 @@ function RefreshCanvas(canvas)	//called periodicly to lay the arena to the canva
 	GLOBAL_CONST.ARENA=RefreshArena(GLOBAL_CONST.ARENA);
 }
 
+//Followings are functions binded to click-event of the buttons:
+
 function PausePlay()	//Pause the refreshing and change the image of button
 {
 	if (GLOBAL_CONST.TIMER!=-1)
