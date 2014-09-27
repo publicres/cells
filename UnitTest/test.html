@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Test-Kernel</title>
+<script src="../kernel.js"></script>
+<link rel="stylesheet" href="./qunit/qunit-git.css">
+<script src="./qunit/qunit-git.js"></script>
+<script>
+	QUnit.test("NavigateCell", function( assert ){
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[0]),[6,7]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[1]),[6,8]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[2]),[6,9]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[3]),[7,9]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[4]),[8,9]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[5]),[8,8]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[6]),[8,7]);
+		assert.deepEqual(NavigateCell([7,8],GLOBAL_CONST.NEIGHBOR[7]),[7,7]);
+	});
+	
+</script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture">1234567</div>
+</body>
+</html>
