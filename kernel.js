@@ -7,8 +7,8 @@
 
 var GLOBAL_CONST=	//a class contains all the global storage used
 {
-	WIDTH: 120,		//the width of the arena
-	HEIGHT: 120,	//the height of the arena
+	WIDTH: 5,		//the width of the arena
+	HEIGHT: 5,	//the height of the arena
 	NEIGHBOR: [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]],	//eight different position that may have impact on the current cell
 	FPS: 30,	//the fps to refresh the arena
 	CANVAS_SIZE: 400,	//canvas size is x*x
