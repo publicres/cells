@@ -7,17 +7,23 @@
 <link rel="stylesheet" href="./qunit/qunit-git.css">
 <script src="./qunit/qunit-git.js"></script>
 <script>
-	QUnit.test("Test-Arena",function( assert ){
+//********************************************************************
+//********Test the functions defined in kernel.js.
+//********Programmer: Zhao Leiyu, Wang Anqi
+//********Date: 2014-9-28
+//********************************************************************
+	QUnit.test("Test-Arena",function( assert ){//test the object Arena's construct function
 		var testArena = new Arena();
 		for (var i = GLOBAL_CONST.HEIGHT - 1; i >= 0; i--) {
-			for (var j = 0; j < GLOBAL_CONST.WIDTH -1; j++) {
+			for (var j = 0; j < GLOBAL_CONST.WIDTH -1; j++) {//every grid's value of the origin terrain should be 0
 				assert.equal(testArena.terrain[i][j],0);
 				assert.equal(testArena.changed[i][j],false);
 			};
 		};
 	});
 
-	QUnit.test("Test-NavigateCell", function( assert ){
+	QUnit.test("Test-NavigateCell", function( assert ){//test function NavigateCell
+		//test whether the neighbors fo [2,3] are correct
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[0]),[1,2]);
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[1]),[1,3]);
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[2]),[1,4]);
@@ -26,7 +32,7 @@
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[5]),[3,3]);
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[6]),[3,2]);
 		assert.deepEqual(NavigateCell([2,3],GLOBAL_CONST.NEIGHBOR[7]),[2,2]);
-
+		//test whether the neighbors fo [0,0] are correct
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[0]),[4,4]);
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[1]),[4,0]);
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[2]),[4,1]);
@@ -35,7 +41,7 @@
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[5]),[1,0]);
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[6]),[1,4]);
 		assert.deepEqual(NavigateCell([0,0],GLOBAL_CONST.NEIGHBOR[7]),[0,4]);
-
+		//test whether the neighbors fo [3,0] are correct
 		assert.deepEqual(NavigateCell([3,0],GLOBAL_CONST.NEIGHBOR[0]),[2,4]);
 		assert.deepEqual(NavigateCell([3,0],GLOBAL_CONST.NEIGHBOR[1]),[2,0]);
 		assert.deepEqual(NavigateCell([3,0],GLOBAL_CONST.NEIGHBOR[2]),[2,1]);
@@ -46,24 +52,25 @@
 		assert.deepEqual(NavigateCell([3,0],GLOBAL_CONST.NEIGHBOR[7]),[3,4]);
 	});
 	
-	QUnit.test("Test-RefreshArena",function( assert){
-		for(var i = 0; i < 512; i++){
+	QUnit.test("Test-RefreshArena",function( assert){//test function RefreshArena
+		for(var i = 0; i < 512; i++){// all possible layout in a 3*3 grid
 			var testArena = new Arena();
 			var tempI = i;
-			var count = 0;
+			var count = 0;//count the number of live cells except the center cell
+			//generate cells' layout
 			for(var j = 1; j <= 3; j++){
 				for(var k = 1; k <= 3; k++){
 					testArena.terrain[j][k] = tempI % 2;
 					tempI = parseInt(tempI/2);
-					if(j != 2 || k != 2){
+					if(j != 2 || k != 2){//live cells except the center cell
 						count+=testArena.terrain[j][k];
 					}
-					else{
+					else{//center cell
 						var origincell = testArena.terrain[j][k];
 					}
 				};
 			};
-
+			//test whether the next generation's layout is correct
 			var nextArena = RefreshArena(testArena);
 			var expected,changed_expect;
 			switch(count){
@@ -98,10 +105,10 @@
 
 	});
 
-	QUnit.test("Test-RandomShuffle",function( assert ){
+	QUnit.test("Test-RandomShuffle",function( assert ){//Test function RandomShuffle
 		var testArena = new Arena();
 		RandomShuffle(testArena);
-		for (var i = GLOBAL_CONST.HEIGHT - 1; i >= 0; i--) {
+		for (var i = GLOBAL_CONST.HEIGHT - 1; i >= 0; i--) {//Test whether the value of arena.changed is correct
 			for (var j = 0; j < GLOBAL_CONST.WIDTH -1; j++) {
 				assert.equal(testArena.changed[i][j],true);
 			};
